@@ -1,0 +1,115 @@
+# .NET Core build outputs
+bin/
+obj/
+out/
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+nupkg/
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+.claude/
+
+# Mac
+.DS_Store
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*~
+
+# SQLite databases (optional - 주석 해제하면 SQLite DB 파일도 제외)
+# *.db
+# *.sqlite
+# *.sqlite3
+
+# Samples and Tests output (빌드 결과물만 제외)
+samples/bin/
+samples/obj/
+tests/bin/
+tests/obj/
+
+# Old directories (루트 레벨에서만 제외, src 내부는 유지)
+/Database/
+/SQLiteDbHelper/
+/SQLiteDbHelper_nt8/
+/TcpClient/
+/Examples/
+
+# Personal/sensitive files
+*.pfx
+*.p12
+appsettings.Development.json
+appsettings.Local.json
+
+# Documentation build output
+docs/_site/
