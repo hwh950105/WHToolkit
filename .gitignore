@@ -2,7 +2,7 @@
 bin/
 obj/
 out/
-
+sampleapp/
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
