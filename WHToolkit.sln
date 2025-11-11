@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHToolkit", "WHToolkit\WHTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sampleapp", "sampleapp\sampleapp.csproj", "{971FCDFB-DD6A-4F60-A070-5B6BD77179AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hwh", "hwh\hwh\hwh.csproj", "{DAB0BA5B-70FC-3333-526C-9FB69E5E6E94}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{971FCDFB-DD6A-4F60-A070-5B6BD77179AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{971FCDFB-DD6A-4F60-A070-5B6BD77179AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{971FCDFB-DD6A-4F60-A070-5B6BD77179AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAB0BA5B-70FC-3333-526C-9FB69E5E6E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAB0BA5B-70FC-3333-526C-9FB69E5E6E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAB0BA5B-70FC-3333-526C-9FB69E5E6E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAB0BA5B-70FC-3333-526C-9FB69E5E6E94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

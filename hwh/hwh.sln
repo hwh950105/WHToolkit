@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36327.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hwh", "hwh\hwh.csproj", "{2D5DBEC6-E840-43C1-900A-0A46646AD378}"
+	ProjectSection(ProjectDependencies) = postProject
+		{362B721A-FE9B-2842-E720-9EA6D3D69A55} = {362B721A-FE9B-2842-E720-9EA6D3D69A55}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WHToolkit", "D:\git\WHToolkit2\WHToolkit\WHToolkit.csproj", "{362B721A-FE9B-2842-E720-9EA6D3D69A55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D5DBEC6-E840-43C1-900A-0A46646AD378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D5DBEC6-E840-43C1-900A-0A46646AD378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D5DBEC6-E840-43C1-900A-0A46646AD378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D5DBEC6-E840-43C1-900A-0A46646AD378}.Release|Any CPU.Build.0 = Release|Any CPU
+		{362B721A-FE9B-2842-E720-9EA6D3D69A55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{362B721A-FE9B-2842-E720-9EA6D3D69A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{362B721A-FE9B-2842-E720-9EA6D3D69A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{362B721A-FE9B-2842-E720-9EA6D3D69A55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CC12FFE8-F2DA-46DE-8F5E-526EBD398949}
+	EndGlobalSection
+EndGlobal

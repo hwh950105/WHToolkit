@@ -134,13 +134,14 @@ public class DbHelperLite : IDisposable
                 var item = new T();
                 foreach (var property in properties)
                 {
-                    if (columnNames.Contains(property.Name) &&
-                        !Equals(reader[property.Name], DBNull.Value))
+                    if (columnNames.Any(c => string.Equals(c, property.Name, StringComparison.OrdinalIgnoreCase)) &&
+               !Equals(reader[property.Name], DBNull.Value))
                     {
                         property.SetValue(item,
                             Convert.ChangeType(reader[property.Name], property.PropertyType),
                             null);
                     }
+
                 }
                 result.Add(item);
             }
