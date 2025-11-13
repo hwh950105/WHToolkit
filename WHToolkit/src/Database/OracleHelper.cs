@@ -12,7 +12,7 @@ namespace WHToolkit.Database
     /// </summary>
     public class OracleHelper : IDisposable
     {
-        private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("MariaDatabase"));
+        private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("OracleDatabase"));
         private readonly Lazy<OracleConnection> _dbConnection;
         private OracleTransaction _transaction;
 
@@ -97,7 +97,7 @@ namespace WHToolkit.Database
         /// <param name="type">명령 타입</param>
         /// <param name="query">실행할 쿼리</param>
         /// <returns>결과 리스트</returns>
-        public List<T> Execute<T>(CommandType type, string query) where T : new()
+        public List<T> ExecuteList<T>(CommandType type, string query) where T : new()
         {
             var result = new List<T>();
             bool autoTransaction = _transaction == null;
@@ -209,6 +209,64 @@ namespace WHToolkit.Database
                     using (var command = CreateCommand(query, type))
                     {
                         return command.ExecuteNonQuery();
+                    }
+                }
+                finally
+                {
+                    CloseTransactionIfNecessary();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 쿼리를 실행하고 DataSet을 반환합니다
+        /// </summary>
+        /// <param name="type">명령 타입</param>
+        /// <param name="query">실행할 쿼리</param>
+        /// <returns>결과 DataSet</returns>
+        public DataSet ExecuteDataSet(CommandType type, string query)
+        {
+            lock (Connection)
+            {
+                try
+                {
+                    EnsureConnectionOpen();
+
+                    using (var command = CreateCommand(query, type))
+                    using (var adapter = new Oracle.ManagedDataAccess.Client.OracleDataAdapter((OracleCommand)command))
+                    {
+                        var dataSet = new DataSet();
+                        adapter.Fill(dataSet);
+                        return dataSet;
+                    }
+                }
+                finally
+                {
+                    CloseTransactionIfNecessary();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 쿼리를 실행하고 DataTable을 반환합니다
+        /// </summary>
+        /// <param name="type">명령 타입</param>
+        /// <param name="query">실행할 쿼리</param>
+        /// <returns>결과 DataTable</returns>
+        public DataTable ExecuteDataTable(CommandType type, string query)
+        {
+            lock (Connection)
+            {
+                try
+                {
+                    EnsureConnectionOpen();
+
+                    using (var command = CreateCommand(query, type))
+                    using (var adapter = new Oracle.ManagedDataAccess.Client.OracleDataAdapter((OracleCommand)command))
+                    {
+                        var dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        return dataTable;
                     }
                 }
                 finally

@@ -4,9 +4,9 @@ using hwh.Core;
 
 namespace hwh.Controls
 {
-    public partial class DataListControl : UserControl
+    public partial class dbDataListControl : UserControl
     {
-        public DataListControl()
+        public dbDataListControl()
         {
             InitializeComponent();
             LoadUserList();
@@ -56,8 +56,7 @@ namespace hwh.Controls
         }
         private void BtnRefresh_Click(object? sender, EventArgs e)
         {
-            LoadUserList();
-            MessageBoxHelper.ShowSuccess("사용자 목록을 새로고침했습니다.", "완료");
+            postdbcall.postdbcallmain();
         }
         private void BtnDelete_Click(object? sender, EventArgs e)
         {

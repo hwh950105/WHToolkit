@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  # PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    container_name: whtoolkit-postgres
+    environment:
+      POSTGRES_PASSWORD: Test1234!
+      POSTGRES_USER: testuser
+      POSTGRES_DB: testdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db-init/postgres:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: whtoolkit-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Test1234!
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: Test1234!
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db-init/mysql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MariaDB
+  mariadb:
+    image: mariadb:11
+    container_name: whtoolkit-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: Test1234!
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: testuser
+      MYSQL_PASSWORD: Test1234!
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db-init/mariadb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MS SQL Server
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: whtoolkit-mssql
+    environment:
+      SA_PASSWORD: "Test1234!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Express"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./db-init/mssql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Test1234! -Q 'SELECT 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Oracle XE (가장 가벼운 버전)
+  oracle:
+    image: gvenzl/oracle-xe:21-slim-faststart
+    container_name: whtoolkit-oracle
+    environment:
+      ORACLE_PASSWORD: Test1234!
+      APP_USER: testuser
+      APP_USER_PASSWORD: Test1234!
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./db-init/oracle:/container-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5

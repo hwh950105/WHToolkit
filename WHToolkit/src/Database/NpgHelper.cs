@@ -13,7 +13,7 @@ namespace WHToolkit.Database
     /// </summary>
     public class NpgHelper : IDisposable
     {
-        private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("MariaDatabase"));
+        private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("NpgHelperDatabase"));
         private readonly Lazy<NpgsqlConnection> _dbConnection;
         private NpgsqlTransaction _transaction;
 
@@ -39,7 +39,9 @@ namespace WHToolkit.Database
         /// </summary>
         public NpgHelper()
         {
+   
             _dbConnection = new(() => new NpgsqlConnection(connectionString));
+ 
         }
 
         /// <summary>
@@ -104,17 +106,18 @@ namespace WHToolkit.Database
         /// <param name="type">명령 타입</param>
         /// <param name="query">실행할 쿼리</param>
         /// <returns>결과 리스트</returns>
-        public List<T> Execute<T>(CommandType type, string query) where T : new()
+        public List<T> ExecuteList<T>(CommandType type, string query) where T : new()
         {
             var result = new List<T>();
+            bool autoTransaction = _transaction == null;
+
             lock (Npgsql)
             {
                 try
                 {
                     EnsureConnectionOpen();
 
-                    // 트랜잭션 시작
-                    if (_transaction == null)
+                    if (autoTransaction)
                     {
                         _transaction = Npgsql.BeginTransaction();
                     }
@@ -123,25 +126,19 @@ namespace WHToolkit.Database
                     {
                         if (type == CommandType.StoredProcedure)
                         {
-                            // 뺄까???
-                            /*            if (!command.Parameters.Contains(Refcursor))
-                                        {
-                                            command.Parameters.Add(new NpgsqlParameter(Refcursor, NpgsqlDbType.Refcursor)
-                                            {
-                                                Direction = ParameterDirection.Output
-                                            });
-                                        }*/
-
                             command.ExecuteNonQuery();
 
-                            var cursorName = command.Parameters[Refcursor].Value?.ToString();
-                            if (!string.IsNullOrEmpty(cursorName))
+                            // Refcursor 파라미터 존재 여부 확인
+                            if (command.Parameters.Contains(Refcursor))
                             {
-
-                                using (var fetchCommand = new NpgsqlCommand($"FETCH ALL IN \"{cursorName}\";", Npgsql)) // 슈발 왜 커서쓰냐
-                                using (var reader = fetchCommand.ExecuteReader())
+                                var cursorName = command.Parameters[Refcursor].Value?.ToString();
+                                if (!string.IsNullOrEmpty(cursorName))
                                 {
-                                    result = MapReaderToList<T>(reader);
+                                    using (var fetchCommand = new NpgsqlCommand($"FETCH ALL IN \"{cursorName}\";", Npgsql))
+                                    using (var reader = fetchCommand.ExecuteReader())
+                                    {
+                                        result = MapReaderToList<T>(reader);
+                                    }
                                 }
                             }
                         }
@@ -153,9 +150,27 @@ namespace WHToolkit.Database
                             }
                         }
                     }
+
+                    if (autoTransaction)
+                    {
+                        _transaction.Commit();
+                    }
+                }
+                catch
+                {
+                    if (autoTransaction && _transaction != null)
+                    {
+                        _transaction.Rollback();
+                    }
+                    throw;
                 }
                 finally
                 {
+                    if (autoTransaction && _transaction != null)
+                    {
+                        _transaction.Dispose();
+                        _transaction = null;
+                    }
                     CloseTransactionIfNecessary();
                 }
             }
@@ -190,6 +205,64 @@ namespace WHToolkit.Database
         }
 
         /// <summary>
+        /// 쿼리를 실행하고 DataSet을 반환합니다
+        /// </summary>
+        /// <param name="type">명령 타입</param>
+        /// <param name="query">실행할 쿼리</param>
+        /// <returns>결과 DataSet</returns>
+        public DataSet ExecuteDataSet(CommandType type, string query)
+        {
+            lock (Npgsql)
+            {
+                try
+                {
+                    EnsureConnectionOpen();
+
+                    using (var command = CreateCommand(query, type))
+                    using (var adapter = new Npgsql.NpgsqlDataAdapter((NpgsqlCommand)command))
+                    {
+                        var dataSet = new DataSet();
+                        adapter.Fill(dataSet);
+                        return dataSet;
+                    }
+                }
+                finally
+                {
+                    CloseTransactionIfNecessary();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 쿼리를 실행하고 DataTable을 반환합니다
+        /// </summary>
+        /// <param name="type">명령 타입</param>
+        /// <param name="query">실행할 쿼리</param>
+        /// <returns>결과 DataTable</returns>
+        public DataTable ExecuteDataTable(CommandType type, string query)
+        {
+            lock (Npgsql)
+            {
+                try
+                {
+                    EnsureConnectionOpen();
+
+                    using (var command = CreateCommand(query, type))
+                    using (var adapter = new Npgsql.NpgsqlDataAdapter((NpgsqlCommand)command))
+                    {
+                        var dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        return dataTable;
+                    }
+                }
+                finally
+                {
+                    CloseTransactionIfNecessary();
+                }
+            }
+        }
+
+        /// <summary>
         /// 쿼리를 실행하고 Output 파라미터를 수집합니다
         /// </summary>
         /// <param name="type">명령 타입</param>
@@ -207,11 +280,11 @@ namespace WHToolkit.Database
                     {
                         var result = command.ExecuteNonQuery();
 
+                        OldParameters = new DataParameterCollection();
                         foreach (NpgsqlParameter param in command.Parameters)
                         {
                             if (param.Direction == ParameterDirection.Output || param.Direction == ParameterDirection.InputOutput)
                             {
-                                OldParameters = new DataParameterCollection();
                                 var existingParam = OldParameters.FirstOrDefault(p => p.ParameterName == param.ParameterName);
                                 if (existingParam != null)
                                 {
@@ -279,7 +352,9 @@ namespace WHToolkit.Database
                         var columnName = columnNames[propertyNameLower]; // 실제 컬럼 이름
                         if (!reader.IsDBNull(reader.GetOrdinal(columnName)))
                         {
-                            property.SetValue(item, Convert.ChangeType(reader[columnName], property.PropertyType));
+                            var value = reader[columnName];
+                            var targetType = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
+                            property.SetValue(item, Convert.ChangeType(value, targetType));
                         }
                     }
                 }

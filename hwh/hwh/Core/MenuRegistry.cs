@@ -76,7 +76,7 @@ namespace hwh.Core
                 menuId: "MENU_DATA_LIST",
                 menuName: "사용자 관리",
                 tabId: "TAB_DATA_LIST",
-                controlFactory: () => new DataListControl(),
+                controlFactory: () => new dbDataListControl(),
                 order: 1,
                 icon: "👥"  // 사용자들 아이콘
             ));

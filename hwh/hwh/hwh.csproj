@@ -21,6 +21,9 @@
     <Compile Update="Controls\apiControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Update="Controls\dbDataListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>
