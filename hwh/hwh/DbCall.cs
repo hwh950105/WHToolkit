@@ -1,4 +1,5 @@
-﻿using hwh.Models;
+﻿using hwh.Controls.TrendChartControl;
+using hwh.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -215,6 +216,155 @@ namespace hwh
                     }
                 }
 
+        /// <summary>
+        /// 센서 타입 목록 조회 (중복 제거)
+        /// D:\git\WHToolkit2\hwh\hwh\bin\Debug\net8.0-windows\example.db
+        /// D:\git\WHToolkit2\hwh\hwh\bin\Debug\net8.0-windows\example.db;Version=3;
+        /// </summary>
+        public static List<string> GetSensorTypes()
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
+                {
+                    string query = "SELECT DISTINCT sensor_type FROM sensor_data ORDER BY sensor_type";
+                    DataTable dt = db.ExecuteDataTable(query);
+                    return dt.AsEnumerable().Select(row => row.Field<string>("sensor_type")!).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<string>();
+            }
+        }
+
+        /// <summary>
+        /// 특정 센서 타입의 최신 값 조회
+        /// </summary>
+        public static double GetLatestSensorValue(string sensorType)
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
+                {
+                    string query = $"SELECT value FROM sensor_data WHERE sensor_type = '{sensorType}' ORDER BY created_at DESC LIMIT 1";
+                    var result = db.ExecuteScalar(query);
+                    return result != null ? Convert.ToDouble(result) : 0.0;
+                }
+            }
+            catch (Exception)
+            {
+                return 0.0;
+            }
+        }
+
+        /// <summary>
+        /// 특정 센서 타입의 시간 범위별 데이터 조회
+        /// </summary>
+        public static DataTable GetSensorDataByTimeRange(string sensorType, DateTime startTime, DateTime endTime)
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
+                {
+                    string startStr = startTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    string endStr = endTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    
+                    string query = $@"
+                        SELECT created_at, value 
+                        FROM sensor_data 
+                        WHERE sensor_type = '{sensorType}' 
+                          AND created_at BETWEEN '{startStr}' AND '{endStr}'
+                        ORDER BY created_at ASC";
+                    
+                    return db.ExecuteDataTable(query);
+                }
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
+
+        public static List<DataPoint> GetSensorDataByTimeRangelist(string sensorType, DateTime startTime, DateTime endTime)
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
+                {
+                    string startStr = startTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    string endStr = endTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    string query = $@"
+                        SELECT created_at as Timestamp, value as Value
+                        FROM sensor_data 
+                        WHERE sensor_type = '{sensorType}' 
+                          AND created_at BETWEEN '{startStr}' AND '{endStr}'
+                        ORDER BY created_at ASC";
+
+                     var _2 = db.ExecuteDataTable(query);
+                     var _1 = db.ExecuteDataSet(query);
+
+                    return db.ExecuteList<DataPoint>(query);
+                }
+            }
+            catch (Exception)
+            {
+                return new List<DataPoint>();
+            }
+        }
+
+
+        /// <summary>
+        /// 특정 센서 타입의 단위 조회
+        /// </summary>
+        public static string GetSensorUnit(string sensorType)
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
+                {
+                    string query = $"SELECT unit FROM sensor_data WHERE sensor_type = '{sensorType}' LIMIT 1";
+                    var result = db.ExecuteScalar(query);
+                    return result?.ToString() ?? "";
+                }
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        /// <summary>
+        /// 센서 데이터 전체 조회 (DataGridView 바인딩용)
+        /// </summary>
+        public static DataTable GetAllSensorDataAsDataTable()
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
+                {
+                    string query = @"
+                        SELECT 
+                            id as 'ID',
+                            sensor_id as '센서ID',
+                            sensor_type as '센서타입',
+                            value as '측정값',
+                            unit as '단위',
+                            strftime('%Y-%m-%d %H:%M:%S', created_at) as '측정시각',
+                            status as '상태'
+                        FROM sensor_data 
+                        ORDER BY created_at DESC
+                        LIMIT 1000";
+                    
+                    return db.ExecuteDataTable(query);
+                }
+            }
+            catch (Exception)
+            {
+                return new DataTable();
+            }
+        }
 
     }
 }

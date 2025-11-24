@@ -166,6 +166,7 @@ namespace hwh.Forms
             {
                 var menuPanel = SidebarMenuFactory.CreateMenuButton(menu, OnMenuClick);
                 menuPanel.Location = new Point(0, yPos);
+                menuPanel.Margin = new Padding(2);
                 _sidebarMenuContainer.Controls.Add(menuPanel);
                 yPos += menuPanel.Height + Theme.SpacingXS;
             }
@@ -177,6 +178,7 @@ namespace hwh.Forms
             foreach (var menu in bottomMenus)
             {
                 var menuPanel = SidebarMenuFactory.CreateMenuButton(menu, OnMenuClick);
+                menuPanel.Margin = new Padding(2);
                 menuPanel.Location = new Point(0, yPos);
                 _sidebarBottomContainer.Controls.Add(menuPanel);
                 yPos += menuPanel.Height + Theme.SpacingXS;

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <RootNamespace>WHToolkit</RootNamespace>
     <AssemblyName>WHToolkit</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -12,6 +12,7 @@
     <Authors>Woohyun Hwang</Authors>
     <Description>WHToolkit - Personal utility framework for multi-database support, SQLite operations, and TCP networking by Woohyun Hwang</Description>
     <PackageTags>database;mssql;oracle;mysql;postgresql;sqlite;tcp;networking;toolkit;utilities</PackageTags>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
