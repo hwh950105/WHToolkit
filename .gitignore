@@ -106,6 +106,9 @@ tests/obj/
 /TcpClient/
 /Examples/
 
+# Excluded project directories
+hwh/CW.Framework.Win/
+
 # Personal/sensitive files
 *.pfx
 *.p12
