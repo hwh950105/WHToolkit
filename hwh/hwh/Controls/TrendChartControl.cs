@@ -91,14 +91,8 @@ public partial class ScottPlotTrendChart : UserControl
     [DefaultValue(true)]
     public bool ShowRangeButtons
     {
-        get => groupBox5.Visible && groupBox4.Visible && groupBox3.Visible && groupBox2.Visible;
-        set
-        {
-            groupBox5.Visible = value;
-            groupBox4.Visible = value;
-            groupBox3.Visible = value;
-            groupBox2.Visible = value;
-        }
+        get => panelRangeButtons.Visible;
+        set => panelRangeButtons.Visible = value;
     }
 
     /// <summary>
@@ -116,9 +110,6 @@ public partial class ScottPlotTrendChart : UserControl
         // 기본 시간 범위 설정
         dtpStart.Value = DateTime.Now.AddMinutes(-RealtimeStartOffsetMinutes);
         dtpEnd.Value = DateTime.Now.AddMinutes(RealtimeWindowMinutes);
-
-        // 빈 상태로 시작 (개발자가 Initialize 호출할 때까지 대기)
-        // DataProvider 설정 후 Initialize() 메서드를 호출해야 함
     }
 
     private void InitializeChart()
