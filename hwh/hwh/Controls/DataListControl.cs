@@ -27,23 +27,9 @@ namespace hwh.Controls
                 // DataGridView에 바로 바인딩
                 dataGridView1.DataSource = dt;
 
-                // 보기 좋게 옵션 설정
                 dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dataGridView1.MultiSelect = false;
-
-                // // 컬럼 너비 수동 설정 (성능 최적화)
-                // if (dataGridView1.Columns.Count > 0)
-                // {
-                //     dataGridView1.Columns["ID"].Width = 60;
-                //     dataGridView1.Columns["아이디"].Width = 120;
-                //     dataGridView1.Columns["이름"].Width = 100;
-                //     dataGridView1.Columns["이메일"].Width = 180;
-                //     dataGridView1.Columns["연락처"].Width = 130;
-                //     dataGridView1.Columns["권한"].Width = 80;
-                //     dataGridView1.Columns["상태"].Width = 80;
-                //     dataGridView1.Columns["가입일"].Width = 150;
-                // }
 
                 lblCount.Text = $"총 {dt.Rows.Count}명의 사용자";
             }

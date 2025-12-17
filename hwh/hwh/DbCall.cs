@@ -218,8 +218,6 @@ namespace hwh
 
         /// <summary>
         /// 센서 타입 목록 조회 (중복 제거)
-        /// D:\git\WHToolkit2\hwh\hwh\bin\Debug\net8.0-windows\example.db
-        /// D:\git\WHToolkit2\hwh\hwh\bin\Debug\net8.0-windows\example.db;Version=3;
         /// </summary>
         public static List<string> GetSensorTypes()
         {

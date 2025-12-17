@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using WHToolkit.Database;
 
 namespace hwh
 {
-     static class postdbcall
+    static class postdbcall
     {
         public static void postdbcallmain()
         {
@@ -15,21 +11,15 @@ namespace hwh
 
             using (NpgHelper db = new NpgHelper(connString))
             {
-                List<test> tests = db.ExecuteList<test>(System.Data.CommandType.Text,"select * from test");
+                List<test> tests = db.ExecuteList<test>(System.Data.CommandType.Text, "select * from test");
                 test? test = tests.FirstOrDefault(a => a.id == 3);
-
                 List<test> tests1 = tests.Where(a => a.id > 3).ToList();
 
-                if(test.id == 1)
+                if (test.id == 1)
                 {
-
                 }
-
-
             }
         }
-
-
     }
 
     public class test

@@ -107,17 +107,8 @@ namespace hwh.Core
                 tabId: "tabId3",
                 controlFactory: () => new Win32TestControl(),
                 order: 3,
-                icon: "🪟" // 윈도우 아이콘
+                icon: "🪟"
             ));
-
-            //RegisterMenu(new MenuItem(
-            //    menuId: "menuId4",
-            //    menuName: "차트",
-            //    tabId: "tabId4",
-            //    controlFactory: () => new chartControl(),
-            //    order: 4,
-            //    icon: "📊" // 차트 아이콘
-            //));
 
             RegisterMenu(new MenuItem(
                 menuId: "menuId5",
