@@ -34,6 +34,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "마우스 이동 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -57,6 +58,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "마우스 왼쪽 클릭 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -80,6 +82,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "마우스 오른쪽 클릭 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -106,6 +109,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "마우스 드래그 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

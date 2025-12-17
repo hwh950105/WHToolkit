@@ -49,6 +49,7 @@ namespace hwh.Controls
             }
             catch (Exception ex)
             {
+                LogHelper.Error(ex, "DB 사용자 목록 로드 실패");
                 MessageBoxHelper.ShowError($"사용자 목록을 불러오는데 실패했습니다.\n{ex.Message}", "오류");
                 lblCount.Text = "총 0명의 사용자";
                 dataGridView1.DataSource = null;

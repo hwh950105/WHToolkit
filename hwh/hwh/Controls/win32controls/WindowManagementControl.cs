@@ -192,6 +192,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "윈도우 찾기 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -211,6 +212,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "윈도우 표시 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -230,6 +232,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "윈도우 숨기기 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -249,6 +252,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "항상 위 설정 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -268,6 +272,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "항상 위 해제 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -288,6 +293,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "윈도우 정보 가져오기 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

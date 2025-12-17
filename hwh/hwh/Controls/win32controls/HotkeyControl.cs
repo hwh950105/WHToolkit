@@ -80,6 +80,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "핫키 등록 실패");
                 lblStatus.Text = $"핫키 등록 실패: {ex.Message}";
                 lblStatus.ForeColor = System.Drawing.Color.Red;
             }
@@ -106,6 +107,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "핫키 해제 실패");
                 lblStatus.Text = $"핫키 해제 실패: {ex.Message}";
                 lblStatus.ForeColor = System.Drawing.Color.Red;
             }

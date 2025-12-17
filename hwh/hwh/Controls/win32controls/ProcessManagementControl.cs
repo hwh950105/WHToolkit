@@ -31,6 +31,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "프로세스 실행 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -67,6 +68,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "프로세스 확인 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -94,6 +96,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "프로세스 종료 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

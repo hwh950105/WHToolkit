@@ -37,6 +37,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "키 전송 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -61,6 +62,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "텍스트 전송 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -78,6 +80,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "Ctrl+C 전송 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -95,6 +98,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "Ctrl+V 전송 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

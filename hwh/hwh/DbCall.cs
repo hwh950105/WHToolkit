@@ -1,4 +1,5 @@
 ﻿using hwh.Controls.TrendChartControl;
+using hwh.Core;
 using hwh.Models;
 using System;
 using System.Collections.Generic;
@@ -30,8 +31,9 @@ namespace hwh
                     return users.Count > 0;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "로그인 실패 - Username: {0}", loginRequest.Username);
                 return false;
             }
         }
@@ -45,22 +47,17 @@ namespace hwh
             {
                 using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
                 {
-                    // 중복 확인
                     string checkQuery = $"SELECT COUNT(*) FROM TB_USER WHERE USERNAME = '{registerRequest.Username}'";
                     var countObj = db.ExecuteScalar(checkQuery);
                     int count = countObj != null ? Convert.ToInt32(countObj) : 0;
                     
                     if (count > 0)
                     {
-                        return false; // 이미 존재하는 아이디
+                        return false;
                     }
 
-                    // 회원가입
                     string email = string.IsNullOrEmpty(registerRequest.Email) ? "NULL" : $"'{registerRequest.Email}'";
                     string phone = string.IsNullOrEmpty(registerRequest.Phone) ? "NULL" : $"'{registerRequest.Phone}'";
-
-                   
-
 
                     string insertQuery = $@"
                         INSERT INTO TB_USER (USERNAME, PASSWORD, NAME, EMAIL, PHONE, ROLE, STATUS, CREATED_AT, UPDATED_AT)
@@ -71,8 +68,9 @@ namespace hwh
                     return rowsAffected > 0;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "회원가입 실패 - Username: {0}", registerRequest.Username);
                 return false;
             }
         }
@@ -91,8 +89,9 @@ namespace hwh
                     return users.FirstOrDefault();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "사용자 정보 조회 실패 - Username: {0}", username);
                 return null;
             }
         }
@@ -110,8 +109,9 @@ namespace hwh
                     return db.ExecuteList<UserModel>(query);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "사용자 목록 조회 실패");
                 return new List<UserModel>();
             }
         }
@@ -146,8 +146,9 @@ namespace hwh
                     return db.ExecuteDataTable(query);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "사용자 목록 DataTable 조회 실패");
                 return new DataTable();
             }
         }
@@ -155,66 +156,66 @@ namespace hwh
         /// <summary>
         /// 사용자 삭제 (상태 변경)
         /// </summary>
-                public static bool DeleteUser(int userId)
+        public static bool DeleteUser(int userId)
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
                 {
-                    try
-                    {
-                        using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
-                        {
-                            string query = $"UPDATE TB_USER SET STATUS = 'DELETED', UPDATED_AT = datetime('now', 'localtime') WHERE USER_ID = {userId}";
-                            int rowsAffected = db.ExecuteNonQuery(query);
-                            return rowsAffected > 0;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
+                    string query = $"UPDATE TB_USER SET STATUS = 'DELETED', UPDATED_AT = datetime('now', 'localtime') WHERE USER_ID = {userId}";
+                    int rowsAffected = db.ExecuteNonQuery(query);
+                    return rowsAffected > 0;
                 }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex, "사용자 삭제 실패 - UserId: {0}", userId);
+                return false;
+            }
+        }
 
-                public static bool UpdateUser(int userId, string name, string? email, string? phone, string? newPassword)
+        public static bool UpdateUser(int userId, string name, string? email, string? phone, string? newPassword)
+        {
+            try
+            {
+                using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
                 {
-                    try
+                    string emailValue = string.IsNullOrEmpty(email) ? "NULL" : $"'{email}'";
+                    string phoneValue = string.IsNullOrEmpty(phone) ? "NULL" : $"'{phone}'";
+                    
+                    string query;
+                    if (!string.IsNullOrEmpty(newPassword))
                     {
-                        using (DbHelperLite db = new DbHelperLite(GetConnectionString()))
-                        {
-                            string emailValue = string.IsNullOrEmpty(email) ? "NULL" : $"'{email}'";
-                            string phoneValue = string.IsNullOrEmpty(phone) ? "NULL" : $"'{phone}'";
-                            
-                            string query;
-                            if (!string.IsNullOrEmpty(newPassword))
-                            {
-                                // 비밀번호도 함께 변경
-                                query = $@"
-                                    UPDATE TB_USER 
-                                    SET NAME = '{name}', 
-                                        EMAIL = {emailValue}, 
-                                        PHONE = {phoneValue},
-                                        PASSWORD = '{newPassword}',
-                                        UPDATED_AT = datetime('now', 'localtime')
-                                    WHERE USER_ID = {userId}";
-                            }
-                            else
-                            {
-                                // 비밀번호는 변경하지 않음
-                                query = $@"
-                                    UPDATE TB_USER 
-                                    SET NAME = '{name}', 
-                                        EMAIL = {emailValue}, 
-                                        PHONE = {phoneValue},
-                                        UPDATED_AT = datetime('now', 'localtime')
-                                    WHERE USER_ID = {userId}";
-                            }
+                        query = $@"
+                            UPDATE TB_USER 
+                            SET NAME = '{name}', 
+                                EMAIL = {emailValue}, 
+                                PHONE = {phoneValue},
+                                PASSWORD = '{newPassword}',
+                                UPDATED_AT = datetime('now', 'localtime')
+                            WHERE USER_ID = {userId}";
+                    }
+                    else
+                    {
+                        query = $@"
+                            UPDATE TB_USER 
+                            SET NAME = '{name}', 
+                                EMAIL = {emailValue}, 
+                                PHONE = {phoneValue},
+                                UPDATED_AT = datetime('now', 'localtime')
+                            WHERE USER_ID = {userId}";
+                    }
 
-                            int rowsAffected = db.ExecuteNonQuery(query);
-                            return rowsAffected > 0;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
+                    int rowsAffected = db.ExecuteNonQuery(query);
+                    return rowsAffected > 0;
                 }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Error(ex, "사용자 정보 수정 실패 - UserId: {0}", userId);
+                return false;
+            }
+        }
 
         /// <summary>
         /// 센서 타입 목록 조회 (중복 제거)
@@ -230,8 +231,9 @@ namespace hwh
                     return dt.AsEnumerable().Select(row => row.Field<string>("sensor_type")!).ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "센서 타입 목록 조회 실패");
                 return new List<string>();
             }
         }
@@ -250,8 +252,9 @@ namespace hwh
                     return result != null ? Convert.ToDouble(result) : 0.0;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "센서 최신값 조회 실패 - SensorType: {0}", sensorType);
                 return 0.0;
             }
         }
@@ -278,8 +281,9 @@ namespace hwh
                     return db.ExecuteDataTable(query);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "센서 데이터 시간 범위 조회 실패 - SensorType: {0}", sensorType);
                 return new DataTable();
             }
         }
@@ -300,18 +304,18 @@ namespace hwh
                           AND created_at BETWEEN '{startStr}' AND '{endStr}'
                         ORDER BY created_at ASC";
 
-                     var _2 = db.ExecuteDataTable(query);
-                     var _1 = db.ExecuteDataSet(query);
+                    var _2 = db.ExecuteDataTable(query);
+                    var _1 = db.ExecuteDataSet(query);
 
                     return db.ExecuteList<DataPoint>(query);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "센서 데이터 리스트 조회 실패 - SensorType: {0}", sensorType);
                 return new List<DataPoint>();
             }
         }
-
 
         /// <summary>
         /// 특정 센서 타입의 단위 조회
@@ -327,8 +331,9 @@ namespace hwh
                     return result?.ToString() ?? "";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "센서 단위 조회 실패 - SensorType: {0}", sensorType);
                 return "";
             }
         }
@@ -358,12 +363,11 @@ namespace hwh
                     return db.ExecuteDataTable(query);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogHelper.Error(ex, "센서 데이터 전체 조회 실패");
                 return new DataTable();
             }
         }
-
     }
 }
-

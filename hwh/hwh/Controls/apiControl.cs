@@ -65,6 +65,7 @@ namespace hwh.Controls
                     }
                     catch (Exception ex)
                     {
+                        LogHelper.Error(ex, "이미지 로드 실패");
                         MessageBoxHelper.ShowError($"이미지를 불러오는데 실패했습니다.\n\n{ex.Message}", "오류");
                         _originalImagePath = null!;
                         btnApply.Enabled = false;
@@ -191,6 +192,7 @@ namespace hwh.Controls
             }
             catch (Exception ex)
             {
+                LogHelper.Error(ex, "AI 분석 처리 중 오류");
                 MessageBoxHelper.ShowError($"예상치 못한 오류가 발생했습니다.\n\n{ex.Message}", "오류");
                 lblStatus.Text = "❌ 오류 발생";
             }

@@ -81,7 +81,7 @@ namespace hwh.Core
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"센서 데이터 초기화 실패: {ex.Message}");
+                LogHelper.Error(ex, "센서 데이터 초기화 실패");
             }
             // 일반 메뉴
             RegisterMenu(new MenuItem(
@@ -183,9 +183,8 @@ namespace hwh.Core
             }
             catch (Exception ex)
             {
-                // 오류 발생 시 메시지 표시
+                LogHelper.Error(ex, "센서 차트 생성 오류");
                 chart.SetTitle($"데이터 로드 오류: {ex.Message}");
-                System.Diagnostics.Debug.WriteLine($"센서 차트 생성 오류: {ex}");
             }
 
             return chart;

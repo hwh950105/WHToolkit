@@ -54,6 +54,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "전체 화면 캡처 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 lblStatus.Text = "캡처 실패!";
             }
@@ -81,6 +82,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "모니터 캡처 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 lblStatus.Text = "캡처 실패!";
             }
@@ -106,6 +108,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "마우스 모니터 캡처 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 lblStatus.Text = "캡처 실패!";
             }
@@ -136,6 +139,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "영역 캡처 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 lblStatus.Text = "캡처 실패!";
             }
@@ -157,6 +161,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "활성 윈도우 캡처 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 lblStatus.Text = "캡처 실패!";
             }
@@ -191,6 +196,7 @@ namespace hwh.Controls.Win32Controls
                     }
                     catch (Exception ex)
                     {
+                        Core.LogHelper.Error(ex, "이미지 저장 실패");
                         MessageBox.Show($"저장 오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
@@ -214,6 +220,7 @@ namespace hwh.Controls.Win32Controls
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "픽셀 색상 읽기 실패");
                 MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

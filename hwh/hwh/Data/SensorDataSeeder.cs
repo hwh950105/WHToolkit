@@ -48,7 +48,7 @@ namespace hwh.Data
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"테이블 생성 실패: {ex.Message}");
+                Core.LogHelper.Error(ex, "센서 데이터 테이블 생성 실패");
                 return false;
             }
         }
@@ -125,7 +125,7 @@ namespace hwh.Data
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"테스트 데이터 생성 실패: {ex.Message}");
+                Core.LogHelper.Error(ex, "테스트 데이터 생성 실패");
                 return false;
             }
         }
@@ -217,7 +217,7 @@ namespace hwh.Data
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"테스트 데이터 생성 실패: {ex.Message}");
+                Core.LogHelper.Error(ex, "테스트 데이터 Seed 실패");
                 return false;
             }
         }
@@ -276,7 +276,7 @@ namespace hwh.Data
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"실시간 데이터 추가 실패: {ex.Message}");
+                Core.LogHelper.Error(ex, "실시간 데이터 추가 실패");
                 return false;
             }
         }
@@ -295,8 +295,9 @@ namespace hwh.Data
                     return result != null ? Convert.ToInt32(result) : 0;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "센서 데이터 삭제 실패");
                 return 0;
             }
         }
@@ -311,7 +312,7 @@ namespace hwh.Data
                 // 1. 테이블 생성
                 if (!CreateSensorDataTable())
                 {
-                    System.Diagnostics.Debug.WriteLine("테이블 생성 실패");
+                    Core.LogHelper.Error("센서 데이터 테이블 생성 실패");
                     return false;
                 }
                 else
@@ -324,7 +325,7 @@ namespace hwh.Data
 
                 if (!SeedTestData())
                 {
-                    System.Diagnostics.Debug.WriteLine("테스트 데이터 생성 실패");
+                    Core.LogHelper.Error("테스트 데이터 Seed 실패");
                     return false;
                 }
 
@@ -334,7 +335,7 @@ namespace hwh.Data
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"초기화 실패: {ex.Message}");
+                Core.LogHelper.Error(ex, "센서 데이터 초기화 실패");
                 return false;
             }
         }

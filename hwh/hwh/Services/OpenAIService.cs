@@ -142,6 +142,7 @@ namespace hwh.Services
 			}
 			catch (Exception ex)
 			{
+				Core.LogHelper.Error(ex, "OpenAI API 호출 실패");
 				Console.WriteLine($"❌ OpenAI API 호출 실패: {ex.Message}");
 				return null;
 			}
@@ -207,6 +208,7 @@ namespace hwh.Services
 			}
 			catch (Exception ex)
 			{
+				Core.LogHelper.Error(ex, "OpenAI 응답 JSON 파싱 실패");
 				Console.WriteLine($"⚠️ JSON 파싱 실패: {ex.Message}");
 				return null;
 			}

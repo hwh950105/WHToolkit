@@ -62,6 +62,7 @@ namespace hwh.Controls.TrendChartControl
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "태그 메타데이터 조회 실패 - TagName: {0}", tagName);
                 throw new Exception($"태그 메타데이터 조회 실패: {tagName}", ex);
             }
         }
@@ -77,6 +78,7 @@ namespace hwh.Controls.TrendChartControl
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "현재 값 조회 실패 - TagName: {0}", tagName);
                 throw new Exception($"현재 값 조회 실패: {tagName}", ex);
             }
         }
@@ -105,6 +107,7 @@ namespace hwh.Controls.TrendChartControl
             }
             catch (Exception ex)
             {
+                Core.LogHelper.Error(ex, "이력 데이터 조회 실패 - TagName: {0}", tagName);
                 throw new Exception($"이력 데이터 조회 실패: {tagName}", ex);
             }
         }

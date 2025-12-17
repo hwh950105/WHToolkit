@@ -666,7 +666,7 @@ public partial class ScottPlotTrendChart : UserControl
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Failed to load data for {tag.Name}: {ex.Message}");
+                Core.LogHelper.Error(ex, "태그 데이터 로드 실패 - TagName: {0}", tag.Name);
             }
         }
 
@@ -730,8 +730,7 @@ public partial class ScottPlotTrendChart : UserControl
             }
             catch (Exception ex)
             {
-                // 에러 발생 시 로깅 (실시간 업데이트 계속 진행)
-                System.Diagnostics.Debug.WriteLine($"Failed to get value for {tag.Name}: {ex.Message}");
+                Core.LogHelper.Error(ex, "태그 현재 값 조회 실패 - TagName: {0}", tag.Name);
             }
         }
 

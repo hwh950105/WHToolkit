@@ -44,6 +44,7 @@ namespace hwh.Controls
             }
             catch (Exception ex)
             {
+                LogHelper.Error(ex, "사용자 정보 로드 실패");
                 MessageBoxHelper.ShowError($"사용자 정보를 불러오는데 실패했습니다.\n{ex.Message}", "오류");
             }
         }
@@ -132,6 +133,7 @@ namespace hwh.Controls
             }
             catch (Exception ex)
             {
+                LogHelper.Error(ex, "사용자 정보 수정 실패");
                 MessageBoxHelper.ShowError($"정보 수정 중 오류가 발생했습니다.\n{ex.Message}", "오류");
             }
         }
@@ -171,6 +173,7 @@ namespace hwh.Controls
             }
             catch (Exception ex)
             {
+                LogHelper.Error(ex, "로그아웃 처리 실패");
                 MessageBoxHelper.ShowError($"로그아웃 중 오류가 발생했습니다.\n{ex.Message}", "오류");
             }
         }
