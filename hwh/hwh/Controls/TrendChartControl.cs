@@ -156,6 +156,7 @@ public partial class ScottPlotTrendChart : UserControl
         _isInitialized = true;
     }
 
+
     private void InitializeEvents()
     {
         Tags.PropertyChanged += Tags_PropertyChanged;
@@ -548,22 +549,29 @@ public partial class ScottPlotTrendChart : UserControl
         DateTime endTime = DateTime.Now;
         DateTime startTime;
 
-        // 실시간 버튼 클릭 시
+        // 실시간 버튼 클릭 시 (토글 방식)
         if (btn.Name == "btnRealtime")
         {
-            // 실시간 모드: 1분 전 ~ 미래 10분으로 설정
-            dtpStart.Value = DateTime.Now.AddMinutes(-1);
-            dtpEnd.Value = DateTime.Now.AddMinutes(10);
+            bool isRealtime = !chkAutoUpdate.Checked;
+            chkAutoUpdate.Checked = isRealtime;
             
-            // 자동 업데이트 활성화
-            if (!chkAutoUpdate.Checked)
+            UpdateRealtimeButtonState(isRealtime);
+            
+            if (isRealtime)
             {
-                chkAutoUpdate.Checked = true;
+                // 실시간 모드: 1분 전 ~ 미래 10분으로 설정
+                dtpStart.Value = DateTime.Now.AddMinutes(-1);
+                dtpEnd.Value = DateTime.Now.AddMinutes(10);
+                InitializeRealtimeMode();
             }
-            
-            // 실시간 모드로 다시 초기화 (과거 데이터 없이 빈 차트로 시작)
-            InitializeRealtimeMode();
             return;
+        }
+
+        // 다른 범위 버튼 클릭 시 실시간 모드 해제
+        if (chkAutoUpdate.Checked)
+        {
+            chkAutoUpdate.Checked = false;
+            UpdateRealtimeButtonState(false);
         }
 
         // 버튼 이름으로 범위 결정
@@ -590,6 +598,23 @@ public partial class ScottPlotTrendChart : UserControl
         if (_dataProvider != null && Tags.Count > 0)
         {
             LoadData();
+        }
+    }
+
+    /// <summary>
+    /// 실시간 버튼 상태 업데이트
+    /// </summary>
+    private void UpdateRealtimeButtonState(bool isActive)
+    {
+        if (isActive)
+        {
+            btnRealtime.Text = "⏹ 실시간 중지";
+            btnRealtime.UseAccentColor = true;
+        }
+        else
+        {
+            btnRealtime.Text = "▶ 실시간";
+            btnRealtime.UseAccentColor = false;
         }
     }
 
@@ -676,6 +701,9 @@ public partial class ScottPlotTrendChart : UserControl
 
     private void ChkAutoUpdate_CheckedChanged(object? sender, EventArgs e)
     {
+        // 버튼 상태 동기화
+        UpdateRealtimeButtonState(chkAutoUpdate.Checked);
+        
         if (chkAutoUpdate.Checked)
         {
             StartAutoUpdate();

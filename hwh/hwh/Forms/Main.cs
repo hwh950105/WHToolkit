@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using hwh.Core;
 using hwh.Models;
 using hwh.Services;
+using Opc.Ua.Gds;
 
 namespace hwh.Forms
 {
@@ -32,6 +33,7 @@ namespace hwh.Forms
             InitializeMenus();
             InitializeFormClosing();
         }
+
 
         private void InitializeFormClosing()
         {

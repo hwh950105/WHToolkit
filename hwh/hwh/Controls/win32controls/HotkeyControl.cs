@@ -58,15 +58,18 @@ namespace hwh.Controls.Win32Controls
         {
             try
             {
-                if (string.IsNullOrEmpty(comboModifiers.SelectedItem?.ToString()) ||
-                    string.IsNullOrEmpty(comboKey.SelectedItem?.ToString()))
+                var modifierText = comboModifiers.SelectedItem?.ToString();
+                var keyText = comboKey.SelectedItem?.ToString();
+
+                if (string.IsNullOrWhiteSpace(modifierText) ||
+                    string.IsNullOrWhiteSpace(keyText))
                 {
                     MessageBox.Show("수정자 키와 키를 선택하세요.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                HotkeyModifiers modifiers = GetModifiers();
-                Keys key = (Keys)Enum.Parse(typeof(Keys), comboKey.SelectedItem.ToString());
+                HotkeyModifiers modifiers = GetModifiers(modifierText);
+                Keys key = (Keys)Enum.Parse(typeof(Keys), keyText);
 
                 HotkeyManager.Register(currentHotkeyId, modifiers, key);
                 
@@ -96,7 +99,12 @@ namespace hwh.Controls.Win32Controls
                     return;
                 }
 
-                string selectedItem = listHotkeys.SelectedItem.ToString();
+                if (listHotkeys.SelectedItem is not string selectedItem || string.IsNullOrWhiteSpace(selectedItem))
+                {
+                    MessageBox.Show("해제할 항목을 선택하세요.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 int id = ExtractIdFromString(selectedItem);
 
                 HotkeyManager.Unregister(id);
@@ -113,9 +121,8 @@ namespace hwh.Controls.Win32Controls
             }
         }
 
-        private HotkeyModifiers GetModifiers()
+        private HotkeyModifiers GetModifiers(string modifier)
         {
-            string modifier = comboModifiers.SelectedItem.ToString();
             return modifier switch
             {
                 "None" => 0,
@@ -132,6 +139,9 @@ namespace hwh.Controls.Win32Controls
 
         private int ExtractIdFromString(string text)
         {
+            if (string.IsNullOrWhiteSpace(text))
+                throw new ArgumentException("핫키 정보가 올바르지 않습니다.", nameof(text));
+
             // "ID: 1, ..." 형식에서 ID 추출
             int startIndex = text.IndexOf("ID: ") + 4;
             int endIndex = text.IndexOf(",", startIndex);

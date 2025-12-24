@@ -124,9 +124,9 @@ namespace hwh.Controls
             btnRealtime.NoAccentTextColor = Color.Empty;
             btnRealtime.Size = new Size(70, 32);
             btnRealtime.TabIndex = 0;
-            btnRealtime.Text = "🔴 실시간";
+            btnRealtime.Text = "▶ 실시간";
             btnRealtime.Type = ReaLTaiizor.Controls.MaterialButton.MaterialButtonType.Contained;
-            btnRealtime.UseAccentColor = true;
+            btnRealtime.UseAccentColor = false;
             btnRealtime.UseVisualStyleBackColor = true;
             btnRealtime.Click += BtnRange_Click;
             // 

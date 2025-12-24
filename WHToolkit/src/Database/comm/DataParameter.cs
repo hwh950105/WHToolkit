@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using System.Data.Common;
 using Microsoft.Extensions.Configuration;   
@@ -10,39 +11,39 @@ namespace WHToolkit.Database.Common
         public override DbType DbType { get; set; }
         public override ParameterDirection Direction { get; set; }
         public override bool IsNullable { get; set; } = true;
-        public override string ParameterName { get; set; }
-        public override string SourceColumn { get; set; }
-        public override object Value { get; set; }
+        public override string ParameterName { get; set; } = string.Empty;
+        public override string SourceColumn { get; set; } = string.Empty;
+        public override object? Value { get; set; }
         public override bool SourceColumnNullMapping { get; set; }
 
-        public DataParameter(ParameterDirection Direction, string ParameterName, object Value)
+        public DataParameter(ParameterDirection Direction, string ParameterName, object? Value)
         {
             this.Direction = Direction;
-            this.ParameterName = ParameterName;
+            this.ParameterName = ParameterName ?? throw new ArgumentNullException(nameof(ParameterName));
             this.Value = Value;
-            if (Value != null && Value.GetType().Name == "DateTime")
+            if (Value is DateTime)
             {
                 DbType = DbType.DateTime;
             }
         }
 
-        public DataParameter(ParameterDirection Direction, string ParameterName, object Value, int Size)
+        public DataParameter(ParameterDirection Direction, string ParameterName, object? Value, int Size)
         {
             this.Direction = Direction;
-            this.ParameterName = ParameterName;
+            this.ParameterName = ParameterName ?? throw new ArgumentNullException(nameof(ParameterName));
             this.Value = Value;
             this.Size = Size;
-            if (Value != null && Value.GetType().Name == "DateTime")
+            if (Value is DateTime)
             {
                 DbType = DbType.DateTime;
             }
         }
 
-        public DataParameter(ParameterDirection Direction, DbType DbType, string ParameterName, object Value)
+        public DataParameter(ParameterDirection Direction, DbType DbType, string ParameterName, object? Value)
         {
             this.Direction = Direction;
             this.DbType = DbType;
-            this.ParameterName = ParameterName;
+            this.ParameterName = ParameterName ?? throw new ArgumentNullException(nameof(ParameterName));
             this.Value = Value;
         }
 
@@ -54,32 +55,32 @@ namespace WHToolkit.Database.Common
 
     public class DataParameterCollection : List<DataParameter>
     {
-        public void Add(string parameterName, object value)
+        public void Add(string parameterName, object? value)
         {
             this.Add(new DataParameter(ParameterDirection.Input, parameterName, value));
         }
 
-        public void Add(string parameterName, object value, int size)
+        public void Add(string parameterName, object? value, int size)
         {
             this.Add(new DataParameter(ParameterDirection.Input, parameterName, value, size));
         }
 
-        public void Add(DbType dbType, string parameterName, object value)
+        public void Add(DbType dbType, string parameterName, object? value)
         {
             this.Add(new DataParameter(ParameterDirection.Input, dbType, parameterName, value));
         }
 
-        public void Add(ParameterDirection direction, string parameterName, object value)
+        public void Add(ParameterDirection direction, string parameterName, object? value)
         {
             this.Add(new DataParameter(direction, parameterName, value));
         }
 
-        public void Add(ParameterDirection direction, string parameterName, object value, int size)
+        public void Add(ParameterDirection direction, string parameterName, object? value, int size)
         {
             this.Add(new DataParameter(direction, parameterName, value, size));
         }
 
-        public void Add(ParameterDirection direction, DbType dbType, string parameterName, object value)
+        public void Add(ParameterDirection direction, DbType dbType, string parameterName, object? value)
         {
             this.Add(new DataParameter(direction, dbType, parameterName, value));
         }

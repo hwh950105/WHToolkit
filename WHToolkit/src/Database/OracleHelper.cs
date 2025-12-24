@@ -14,7 +14,7 @@ namespace WHToolkit.Database
     {
         private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("OracleDatabase"));
         private readonly Lazy<OracleConnection> _dbConnection;
-        private OracleTransaction _transaction;
+        private OracleTransaction? _transaction;
 
         private string InPrefix = ":";
         private string OutPrefix = ":";

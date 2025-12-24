@@ -158,9 +158,18 @@ namespace hwh.Controls.Win32Controls
         {
             if (listWindows.SelectedItems.Count > 0)
             {
-                targetWindowHandle = (IntPtr)listWindows.SelectedItems[0].Tag;
-                txtWindowTitle.Text = listWindows.SelectedItems[0].Text;
-                lblStatus.Text = $"선택된 윈도우: {listWindows.SelectedItems[0].Text}";
+                var selectedItem = listWindows.SelectedItems[0];
+                if (selectedItem.Tag is IntPtr handle && handle != IntPtr.Zero)
+                {
+                    targetWindowHandle = handle;
+                }
+                else
+                {
+                    targetWindowHandle = IntPtr.Zero;
+                }
+
+                txtWindowTitle.Text = selectedItem.Text;
+                lblStatus.Text = $"선택된 윈도우: {selectedItem.Text}";
             }
         }
 

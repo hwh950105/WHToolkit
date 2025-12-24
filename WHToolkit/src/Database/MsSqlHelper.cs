@@ -14,7 +14,7 @@ namespace WHToolkit.Database
     {
         private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("MsSqlDatabase"));
         private readonly Lazy<SqlConnection> _dbConnection;
-        private SqlTransaction _transaction;
+        private SqlTransaction? _transaction;
 
         private string InPrefix = "@";
         private string OutPrefix = "@";

@@ -30,7 +30,7 @@ namespace hwh.Services
 		/// <summary>
 		/// OpenAI Vision API를 사용하여 차트 이미지 분석
 		/// </summary>
-		public async Task<ChartPredictionResult> AnalyzeChartAsync(string chartPath, string modelName = "gpt-5o")
+		public async Task<ChartPredictionResult?> AnalyzeChartAsync(string chartPath, string modelName = "gpt-5o")
 		{
 			// 2️⃣ 실제 OpenAI API 호출
 			try
@@ -160,7 +160,7 @@ namespace hwh.Services
 		/// <summary>
 		/// JSON 응답을 ChartPredictionResult로 파싱
 		/// </summary>
-		private ChartPredictionResult ParsePredictionJson(string jsonText)
+		private ChartPredictionResult? ParsePredictionJson(string jsonText)
 		{
 			try
 			{

@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using hwh.Core;
+using hwh;
 
 namespace hwh.Controls
 {
@@ -57,7 +58,7 @@ namespace hwh.Controls
         }
         private void BtnRefresh_Click(object? sender, EventArgs e)
         {
-            postdbcall.postdbcallmain();
+            PostDbCall.Run();
         }
         private void BtnDelete_Click(object? sender, EventArgs e)
         {

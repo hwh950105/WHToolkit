@@ -15,7 +15,7 @@ namespace WHToolkit.Database
     {
         private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("NpgHelperDatabase"));
         private readonly Lazy<NpgsqlConnection> _dbConnection;
-        private NpgsqlTransaction _transaction;
+        private NpgsqlTransaction? _transaction;
 
         private string InPrefix = "";
         private string OutPrefix = "";

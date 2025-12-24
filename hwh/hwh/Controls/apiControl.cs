@@ -225,6 +225,12 @@ namespace hwh.Controls
         /// </summary>
         private async Task<ChartPredictionResult?> AnalyzeChartAsync()
         {
+            if (string.IsNullOrWhiteSpace(_resizedImagePath))
+            {
+                MessageBoxHelper.ShowWarning("분석할 이미지가 준비되지 않았습니다. 먼저 이미지를 선택하고 전처리를 완료하세요.", "분석 불가");
+                return null;
+            }
+
             var openAI = new OpenAIService(_apiKey);
             return await openAI.AnalyzeChartAsync(_resizedImagePath, "gpt-4o-mini");
         }

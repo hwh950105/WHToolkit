@@ -14,7 +14,7 @@ namespace WHToolkit.Database
     {
         private static readonly string connectionString = SecurityHelper.DecryptAES(Commoncode.GetConfigValue("MySqlDatabase"));
         private readonly Lazy<MySqlConnection> _dbConnection;
-        private MySqlTransaction _transaction;
+        private MySqlTransaction? _transaction;
 
         private string InPrefix = "@";
         private string OutPrefix = "@";
