@@ -119,7 +119,14 @@ namespace hwh.Core
                 icon: "📈" // 추세 차트 아이콘
             ));
 
-
+            //RegisterMenu(new MenuItem(
+            //    menuId: "menuId6",
+            //    menuName: "test",
+            //    tabId: "tabId6",
+            //    controlFactory: () => new Maketest(),
+            //    order: 5,
+            //    icon: "📈" // 추세 차트 아이콘
+            //));
 
             // 하단 고정 메뉴
             RegisterMenu(new MenuItem(
